@@ -2,54 +2,67 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [previewImage, setPreviewImage] = useState<string[]>([]);
-  const [fileInfos, setFileInfos] = useState<File[]>([]);
+  const [previewImage, setPreviewImage] = useState<string[]>([]); 
+  // state untuk menerima preview image
+  const [fileInfos, setFileInfos] = useState<File[]>([]); 
+  // state untuk menerima data File yang dimana terdapat attribute seperti name, size, dll
 
   const checkIsFileValid = (file: Blob) => {
     return file.type.includes("image") ? true : false;
-  };
+  }; // fungsi untuk mengecek apakah file yang dipilih merupakan file image atau bukan
 
-  const isDisabled = previewImage.length >= 5;
+  const isDisabled = previewImage.length >= 5; 
+  // kondisi untuk disable file jika sudah ada 5 file
 
+  // funsi untuk menghandle file baik lewat drag and drop atau label upload
   const handleMultipleImages = (file: FileList | null) => {
-    console.log("file", file);
     if (file) {
+      // mengecek apakah ada file duplikat
       const dupes = Array.from(file)
         .map((item: File) =>
           fileInfos.filter((items: File) => items.name === item.name)
         )
         .flat();
-      const targetFiles: File[] = Array.from(file);
-      const selectedFiles: any = [];
+      const targetFiles: File[] = Array.from(file); 
+      // menjadikan file yang dipilih sebagai array
+      const selectedFiles: any = []; // array untuk menyimpan file yang valid
       const filteredItem = targetFiles.filter(
         (item: File) => item.size < 2000000 && checkIsFileValid(item)
-      );
+      ); 
+      // memfilter array file yang telah dipilih dengan kondisi ukuran dibawah 2MB
+      // dan merupakan file gambar yang valid
       if (dupes.length) {
         alert("terdapat duplikat!");
+        // memunculkan alert apabila ada duplikat file
       } else if (previewImage.length + filteredItem.length > 5) {
         alert("maximal 5 file!");
+        // memunculkan alert apabila file yang dipilih sudah ada 5
       } else if (
         Array.from(file).filter((item: File) => item.size > 2000000).length
       ) {
         alert("terdapat file dengan ukuran gambar lebih dari 2MB!");
+        // memunculkan alert apabila terdapat file dengan ukurang lebih dari 2MB
       } else if (filteredItem.length === targetFiles.length) {
         filteredItem.map((file: any) => {
           return selectedFiles.push(URL.createObjectURL(file));
         });
+        // apabila tidak ada masalah, maka file yang dipilih akan masuk ke array selectedFiles
         setPreviewImage([...previewImage, ...selectedFiles]);
         setFileInfos([...fileInfos, filteredItem].flat());
+        // memasukan konten isi selectedFiles ke dalam 
+        // state untuk preview image dan state file info
       } else {
         alert("terdapat file yang tidak valid");
+        // alert yang muncul apabila ada file yang bukan image atau tidak valid
       }
     }
   };
-  console.log("info", fileInfos);
-  console.log("preview", previewImage);
 
   const handleDeleteImages = (index: number, name: string) => {
     setPreviewImage(previewImage.filter((item: string) => item !== name));
     setFileInfos(fileInfos.filter((item: File) => item !== fileInfos[index]));
   };
+  // fungsi untuk menghapus gambar
 
   return (
     <div
@@ -61,6 +74,7 @@ function App() {
       onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
       }}
+      // fungsi drag and drop
     >
       <div className="file-upload-container">
         <p>Drop you images here</p>
@@ -88,6 +102,7 @@ function App() {
         />
       </div>
       <div className="App flex">
+        {/* preview gambar yang telah dipilih  */}
         {previewImage.length
           ? previewImage.map((item, index) => {
               return (
