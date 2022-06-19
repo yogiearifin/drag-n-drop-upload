@@ -36,3 +36,46 @@
     transform: rotate(360deg);
   }
 }
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.file-upload-container {
+  border: 1px black solid;
+  margin: 5%;
+  padding: 5%;
+}
+
+.file-upload {
+  display: none;
+}
+
+.file-upload-label {
+  color: blue;
+}
+
+.file-upload-label-disabled {
+  color: grey;
+}
+
+.preview-image {
+  width: 200px;
+  height: 200px;
+  padding: 5px;
+}
+
+.preview-image-container {
+  margin: 10px;
+}
+
+.preview-image-delete {
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 25px;
+}
