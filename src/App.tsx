@@ -14,7 +14,7 @@ function App() {
   const isDisabled = previewImage.length >= 5; 
   // kondisi untuk disable file jika sudah ada 5 file
 
-  // funsi untuk menghandle file baik lewat drag and drop atau label upload
+  // fungsi untuk menghandle file baik lewat drag and drop atau label upload
   const handleMultipleImages = (file: FileList | null) => {
     if (file) {
       // mengecek apakah ada file duplikat
